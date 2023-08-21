@@ -29,6 +29,8 @@ SECRET_KEY = '^w4ylwg8vd1)=7f2+@s!!d*+$(-(d@ba!to^5g-s59a=sn2@%-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 ALLOWED_HOSTS = []
 
 
@@ -42,7 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'corsheaders',
     'chatbot',
+
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 MIDDLEWARE = [
