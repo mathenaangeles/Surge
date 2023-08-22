@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
-openai.api_key = env('API_KEY')
+# openai.api_key = env('API_KEY')
 
 def home(request):
     try:
