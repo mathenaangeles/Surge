@@ -1,7 +1,7 @@
+import asyncio
 from azure.search.documents import SearchClient
 from azure.core.credentials import AzureKeyCredential
 from django.shortcuts import render, redirect
-import environ
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -10,27 +10,40 @@ import os
 from typing import List
 from utils import ChatReadRetrieveReadApproach
 
-env = environ.Env()
-environ.Env.read_env()
-
-openai.api_type = env["AZURE_OPENAI_TYPE"]
-openai.api_base = env["AZURE_OPENAI_SERVICE"]
-openai.api_version = env["AZURE_OPENAI_CHATGPT_MODEL"]
-openai_chatgpt_model = env["AZURE_OPENAI_CHATGPT_MODEL"]
-openai.api_type = env["AZURE_OPENAI_TYPE"]
-openai.api_key = env["OPENAI_SECRET_KEY"]
+openai.api_type = os.environ["AZURE_OPENAI_TYPE"]
+openai.api_base = os.environ["AZURE_OPENAI_SERVICE"]
+openai.api_version = os.environ["AZURE_OPENAI_CHATGPT_VERSION"]
+openai_chatgpt_model = os.environ["AZURE_OPENAI_CHATGPT_MODEL"]
+openai.api_type = os.environ["AZURE_OPENAI_TYPE"]
+openai.api_key = os.environ["OPENAI_SECRET_KEY"]
 openai_chatgpt_deployment = os.environ["AZURE_OPENAI_CHATGPT_DEPLOYMENT"]
 
-azure_search_service = env["AZURE_SEARCH_SERVICE"]
-azure_search_index = env["AZURE_SEARCH_INDEX"]
-azure_secret_key = AzureKeyCredential(env["AZURE_SECRET_KEY"])
+azure_search_service = os.environ["AZURE_SEARCH_SERVICE"]
+azure_search_index = os.environ["AZURE_SEARCH_INDEX"]
+azure_secret_key = AzureKeyCredential(os.environ["AZURE_SECRET_KEY"])
 
 
 search_client = SearchClient(endpoint=azure_search_service,
                              index_name=azure_search_index,
                              credential=azure_secret_key)
 
-ChatReadRetrieveReadApproach(search_client,openai_chatgpt_model,openai_chatgpt_model) # the ChatGPT Method from utils.py
+# input
+history = [{"user": "Unilever background"}]
+
+# settings
+overrides = {"retrieval_mode": "text", "semantic_ranker": False, "semantic_captions": False, "top": 3, "suggest_followup_questions": True}
+
+# Instantiate GPT
+agent = ChatReadRetrieveReadApproach(
+                                    search_client,
+                                    openai_chatgpt_deployment,
+                                    openai_chatgpt_model,
+                                    'chat','sourcepage','content') 
+
+# Run
+async def test():
+  await agent.run(history,overrides)
+asyncio.run(test())
 
 def home(request):
     try:

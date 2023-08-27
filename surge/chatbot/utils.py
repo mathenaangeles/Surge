@@ -7,7 +7,9 @@ from azure.search.documents.models import QueryType
 
 from core.messagebuilder import MessageBuilder
 from core.modelhelper import get_token_limit
-from text import nonewlines
+
+def nonewlines(s: str) -> str:
+    return s.replace('\n', ' ').replace('\r', ' ')
 
 class ChatApproach(ABC):
     @abstractmethod
