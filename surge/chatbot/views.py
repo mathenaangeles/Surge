@@ -1,9 +1,36 @@
+from azure.search.documents import SearchClient
+from azure.core.credentials import AzureKeyCredential
 from django.shortcuts import render, redirect
-import openai
-
+import environ
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+import openai
+import os
+from typing import List
+from utils import ChatReadRetrieveReadApproach
+
+env = environ.Env()
+environ.Env.read_env()
+
+openai.api_type = env["AZURE_OPENAI_TYPE"]
+openai.api_base = env["AZURE_OPENAI_SERVICE"]
+openai.api_version = env["AZURE_OPENAI_CHATGPT_MODEL"]
+openai_chatgpt_model = env["AZURE_OPENAI_CHATGPT_MODEL"]
+openai.api_type = env["AZURE_OPENAI_TYPE"]
+openai.api_key = env["OPENAI_SECRET_KEY"]
+openai_chatgpt_deployment = os.environ["AZURE_OPENAI_CHATGPT_DEPLOYMENT"]
+
+azure_search_service = env["AZURE_SEARCH_SERVICE"]
+azure_search_index = env["AZURE_SEARCH_INDEX"]
+azure_secret_key = AzureKeyCredential(env["AZURE_SECRET_KEY"])
+
+
+search_client = SearchClient(endpoint=azure_search_service,
+                             index_name=azure_search_index,
+                             credential=azure_secret_key)
+
+ChatReadRetrieveReadApproach(search_client,openai_chatgpt_model,openai_chatgpt_model) # the ChatGPT Method from utils.py
 
 def home(request):
     try:
