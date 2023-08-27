@@ -40,7 +40,7 @@ Use double angle brackets to reference the questions, e.g. <<What strategies sho
 Try not to repeat questions that have already been asked.
 Only generate questions and do not generate any text before or after the questions, such as 'Next Questions'"""
 
-    query_prompt_template = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base about employee healthcare plans and the employee handbook.
+    query_prompt_template = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base about the annual reports of Unilever and its competitors.
 Generate a search query based on the conversation and the new question.
 Do not include cited source filenames and document names e.g info.txt or doc.pdf in the search query terms.
 Do not include any text inside [] or <<>> in the search query terms.
@@ -49,10 +49,12 @@ If the question is not in English, translate the question to English before gene
 If you cannot generate a search query, return just the number 0.
 """
     query_prompt_few_shots = [
-        {'role' : USER, 'content' : 'What is the turnover of Unilever in 2021?' },
-        {'role' : ASSISTANT, 'content' : 'Show available information on the turnover of Unilever for the year 2021' },
-        {'role' : USER, 'content' : 'What is the breakdown of turnover by Business Group?' },
-        {'role' : ASSISTANT, 'content' : 'Show the components of the turnover of Unilever in 2021 by Business Group' }
+        {'role' : USER, 'content' : "What is Unilever's sales?"},
+        {'role' : ASSISTANT, 'content' : "Show a detailed overview of Unilever's financial performance for the year 2021" },
+        {'role' : USER, 'content' : "What is the breakdown of turnover by Business Group?"},
+        {'role' : ASSISTANT, 'content' : "Show the components of the turnover of Unilever in 2021 by Business Group"},
+        {'role': USER, 'content': "What is Unilever's sales for 2015-2019?"},
+        {'role': ASSISTANT, 'content':"Provide a detailed overview of Unilever's financial performance from 2015 to 2019, specifically focusing on their revenue or turnover during this period. Include insights into any growth or decline trends, major contributing factors, and a comparison with key competitors. Feel free to incorporate relevant data and statistics to support your analysis."}
     ]
 
     def __init__(self, search_client: SearchClient, chatgpt_deployment: str, chatgpt_model: str, embedding_deployment: str, sourcepage_field: str, content_field: str):
@@ -66,7 +68,7 @@ If you cannot generate a search query, return just the number 0.
 
     async def run(self, history: list[dict[str, str]], overrides: dict[str, Any]) -> Any:
         has_text = overrides.get("retrieval_mode") in ["text", "hybrid", None]
-        has_vector = overrides.get("retrieval_mode") in ["vectors", "hybrid", None]
+        has_vector = False #overrides.get("retrieval_mode") in ["vectors", "hybrid", None]
         use_semantic_captions = True if overrides.get("semantic_captions") and has_text else False
         top = overrides.get("top") or 3
         exclude_category = overrides.get("exclude_category") or None
@@ -89,7 +91,7 @@ If you cannot generate a search query, return just the number 0.
             model=self.chatgpt_model,
             messages=messages,
             temperature=0.0,
-            max_tokens=32,
+            max_tokens=400,
             n=1)
 
         query_text = chat_completion.choices[0].message.content
@@ -124,10 +126,10 @@ If you cannot generate a search query, return just the number 0.
         else:
             r = await self.search_client.search(query_text,
                                           filter=filter,
-                                          top=top,
-                                          vector=query_vector,
-                                          top_k=50 if query_vector else None,
-                                          vector_fields="embedding" if query_vector else None)
+                                          top=top)
+                                          # vector=None, #query_vector
+                                          # top_k=None, #50 if query_vector else None,
+                                          # vector_fields=None) #"embedding" if query_vector else None)
         if use_semantic_captions:
             results = [doc[self.sourcepage_field] + ": " + nonewlines(" . ".join([c.text for c in doc['@search.captions']])) async for doc in r]
         else:
@@ -158,14 +160,19 @@ If you cannot generate a search query, return just the number 0.
             deployment_id=self.chatgpt_deployment,
             model=self.chatgpt_model,
             messages=messages,
-            temperature=overrides.get("temperature") or 0.7,
+            temperature=overrides.get("temperature") or 0.6,
             max_tokens=1024,
             n=1)
 
         chat_content = chat_completion.choices[0].message.content
 
         msg_to_display = '\n\n'.join([str(message) for message in messages])
-
+        end = {"data_points": results, "answer": chat_content, "thoughts": f"Searched for:<br>{query_text}<br><br>Conversations:<br>" + msg_to_display.replace('\n', '<br>')}
+        print('Original Question', history[-1]["user"], '==============')
+        print('Refined Question:', query_text, '==============')
+        print('Answer:', end['answer'], '==============')
+        print('Dictionary Keys:',end.keys(),'==============')
+        print('Data Points:', results)
         return {"data_points": results, "answer": chat_content, "thoughts": f"Searched for:<br>{query_text}<br><br>Conversations:<br>" + msg_to_display.replace('\n', '<br>')}
 
     def get_messages_from_history(self, system_prompt: str, model_id: str, history: list[dict[str, str]], user_conv: str, few_shots = [], max_tokens: int = 4096) -> list:
