@@ -24,6 +24,6 @@
 
 <script>
 export default {
-  name: 'Homepage',
+  name: 'Homepage'
 }
 </script>

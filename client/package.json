@@ -12,8 +12,10 @@
     "core-js": "^3.6.5",
     "cross-env": "^7.0.3",
     "jquery": "^3.7.0",
+    "plugin.js": "^0.0.6",
     "popper.js": "^1.16.1",
-    "vue": "^3.0.0"
+    "vue": "^3.0.0",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
