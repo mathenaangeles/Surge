@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import environ
 from pathlib import Path
+from ms_identity_web.configuration import AADConfig
+from ms_identity_web import IdentityWebPython
 
 env = environ.Env()
 environ.Env.read_env()
@@ -32,6 +34,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = []
 
+AAD_CONFIG = AADConfig.parse_json(file_path='aad.config.json')
+MS_IDENTITY_WEB = IdentityWebPython(AAD_CONFIG)
 
 # Application definition
 
@@ -58,6 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'ms_identity_web.django.middleware.MsalMiddleware'
 ]
 
 ROOT_URLCONF = 'surge.urls'

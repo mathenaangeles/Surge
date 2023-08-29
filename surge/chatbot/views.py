@@ -8,7 +8,7 @@ from rest_framework import status
 import openai
 import os
 from typing import List
-from utils import ChatReadRetrieveReadApproach
+from .utils import ChatReadRetrieveReadApproach
 
 openai.api_type = os.environ["AZURE_OPENAI_TYPE"]
 openai.api_base = os.environ["AZURE_OPENAI_SERVICE"]

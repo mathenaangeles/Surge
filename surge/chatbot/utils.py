@@ -1,18 +1,18 @@
-from abc import ABC, abstractmethod
 from typing import Any
+import abc
 
 import openai
 from azure.search.documents.aio import SearchClient
 from azure.search.documents.models import QueryType
 
-from core.messagebuilder import MessageBuilder
-from core.modelhelper import get_token_limit
+from .core.messagebuilder import MessageBuilder
+from .core.modelhelper import get_token_limit
 
 def nonewlines(s: str) -> str:
     return s.replace('\n', ' ').replace('\r', ' ')
 
-class ChatApproach(ABC):
-    @abstractmethod
+class ChatApproach(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
     async def run(self, history: list[dict], overrides: dict[str, Any]) -> Any:
         ...
 
