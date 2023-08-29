@@ -112,7 +112,7 @@ If you cannot generate a search query, return just the number 0.
 
         # Use semantic L2 reranker if requested and if retrieval mode is text or hybrid (vectors + text)
         if overrides.get("semantic_ranker") and has_text:
-            r = await self.search_client.search(query_text,
+            r = self.search_client.search(query_text,
                                           filter=filter,
                                           query_type=QueryType.SEMANTIC,
                                           query_language="en-us",
@@ -124,16 +124,16 @@ If you cannot generate a search query, return just the number 0.
                                           top_k=50 if query_vector else None,
                                           vector_fields="embedding" if query_vector else None)
         else:
-            r = await self.search_client.search(query_text,
+            r = self.search_client.search(query_text,
                                           filter=filter,
                                           top=top)
                                           # vector=None, #query_vector
                                           # top_k=None, #50 if query_vector else None,
                                           # vector_fields=None) #"embedding" if query_vector else None)
         if use_semantic_captions:
-            results = [doc[self.sourcepage_field] + ": " + nonewlines(" . ".join([c.text for c in doc['@search.captions']])) async for doc in r]
+            results = [doc[self.sourcepage_field] + ": " + nonewlines(" . ".join([c.text for c in doc['@search.captions']])) for doc in r]
         else:
-            results = [doc[self.sourcepage_field] + ": " + nonewlines(doc[self.content_field]) async for doc in r]
+            results = [doc[self.sourcepage_field] + ": " + nonewlines(doc[self.content_field]) for doc in r]
         content = "\n".join(results)
 
         follow_up_questions_prompt = self.follow_up_questions_prompt_content if overrides.get("suggest_followup_questions") else ""
