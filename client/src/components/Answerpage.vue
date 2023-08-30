@@ -32,8 +32,8 @@
           </div>
         </div>
         <div class="mt-5">
-          <span>Unilever values diversity in its workforce and Board, with a focus on gender diversity but also considering a variety of backgrounds, skills, knowledge, and nationalities.</span>
-          <br><br><br>
+          <VueWriter :array="arr" :typeSpeed="10" :iterations='1'/>
+          <br><br>
           <hr/>
           <br>
           <img src="@/assets/img/lightbulb.png" height="50">
@@ -51,7 +51,10 @@
 
 <script>
 export default {
-  name: 'Answerpage'
+  name: 'Answerpage',
+  data(){
+    return { arr: ["Unilever values diversity in its workforce and Board, with a focus on gender diversity but also considering a variety of backgrounds, skills, knowledge, and nationalities."] }
+  }
 }
 </script>
 

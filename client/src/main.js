@@ -7,6 +7,8 @@ import Answerpage from "./components/Answerpage.vue"
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
+import VueWriter from "vue-writer";
+
 const routes = [
     { path: '/', component: Homepage },
     { path: '/conversation', component: Answerpage },
@@ -17,4 +19,4 @@ const router = createRouter({
     routes
 })
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(router).use(VueWriter).mount('#app')

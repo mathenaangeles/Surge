@@ -16,7 +16,8 @@
     "plugin.js": "^0.0.6",
     "popper.js": "^1.16.1",
     "vue": "^3.0.0",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue-writer": "^1.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
