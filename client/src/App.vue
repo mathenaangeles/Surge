@@ -70,6 +70,7 @@
 <script>
 import { ref } from 'vue';
 import Modal from './components/Modal.vue'
+//import axios from 'axios'
 
 export default {
   name: "App",
@@ -81,8 +82,8 @@ export default {
     const area = ref('General');
 
     const fetchAnswer = () => {
-      console.log("QUESTION: " + question.value);
-      console.log("AREA: " + area.value);
+      // console.log("QUESTION: " + question.value);
+      // console.log("AREA: " + area.value);
       question.value = '';
     }
     const modalActive = ref(false);
