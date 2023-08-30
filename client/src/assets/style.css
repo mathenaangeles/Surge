@@ -46,7 +46,6 @@
     padding-top: 10px;
 }
 
-
 .vis-window{
     background-color: yellow;
 }
@@ -69,6 +68,15 @@
     justify-content: center;
     font-size: 14px;
 }
+.suggested:hover {
+    -webkit-filter: brightness(90%);
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
 
 .prompt-area{
     height: 10%;
@@ -151,6 +159,3 @@
     padding: 15px;
   }
   
-  .ai {
-    background: #40414f;
-  }
