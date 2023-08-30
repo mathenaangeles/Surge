@@ -9,12 +9,24 @@
   <div style = "display: flex; justify-content:flex-end;">
   <!--VISUALIZATION MODAL-->
   <Modal v-if="modalActive" :toggleModal= "() => toggleModal()">
-    <div v-if="area == 'General'">General Test</div>
-    <div v-if="area == 'Financials'">Financials Test</div>
-    <div v-if="area == 'Technology'">Technology Test</div>
-    <div v-if="area == 'Sustainability'">Sustainability Test</div>
-    <div v-if="area == 'R&D'">R&D Test</div>
-    <div v-if="area == 'MAStrategy'">MAStrategy Test</div>
+    <div v-if="area == 'General'" class="d-flex align-items-center h-100 w-100">
+      <img src="@/assets/img/visualizations/general.png" style="object-fit:cover;width:100%">
+    </div>
+    <div v-if="area == 'Financials'" class="d-flex align-items-center h-100 w-100">
+      <img src="@/assets/img/visualizations/financials.png" style="object-fit:cover;width:100%">
+    </div>
+    <div v-if="area == 'E-Commerce'" class="d-flex align-items-center h-100 w-100">
+      <img src="@/assets/img/visualizations/e-commerce.png" style="object-fit:cover;width:100%">
+    </div>
+    <div v-if="area == 'Sustainability'" class="d-flex align-items-center h-100 w-100">
+      <img src="@/assets/img/visualizations/sustainability.png" style="object-fit:cover;width:100%">
+    </div>
+    <div v-if="area == 'R&D'" class="d-flex align-items-center h-100 w-100">
+      <img src="@/assets/img/visualizations/r&d.png" style="object-fit:cover;width:100%">
+    </div>
+    <div v-if="area == 'MAStrategy'" class="d-flex align-items-center h-100 w-100">
+      <img src="@/assets/img/visualizations/m&a.png" style="object-fit:cover;width:100%">
+    </div>
   </Modal>
   </div>
   <!-- AT A GLANCE BUTTON -->
@@ -27,10 +39,10 @@
       <form @submit.prevent="fetchAnswer()">
         <div class="d-flex flex-row">
           <div class="custom-dropdown">
-            <select v-model="area" class="form-select text-light">
+            <select v-model="area" @change="() => closeModal()" class="form-select text-light">
               <option value="General">General</option>
               <option value="Financials">Financials</option>
-              <option value="Technology">Technology</option>
+              <option value="E-Commerce">E-Commerce</option>
               <option value="Sustainability">Sustainability</option>
               <option value="R&D">R&D</option>
               <option value="MAStrategy">M&A, Strategy</option>
@@ -75,7 +87,10 @@ export default {
     const toggleModal = () => {
       modalActive.value = !modalActive.value
     }
-    return { question, area, modalActive, toggleModal, fetchAnswer };
+    const closeModal = () => {
+      modalActive.value = false;
+    }
+    return { question, area, modalActive, toggleModal, closeModal, fetchAnswer };
   },
 }
 </script>
