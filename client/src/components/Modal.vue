@@ -23,7 +23,7 @@ export default {
 <style scoped>
 .visual-modal{
     background-color: transparent;
-    position: absolute;
+    position: fixed;
     margin-top: 50px;
     height: 75%;
     width: 95%;

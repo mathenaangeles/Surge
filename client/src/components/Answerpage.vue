@@ -43,6 +43,7 @@
             <span class="related-q">What actions has Unilever taken to promote diversity and inclusion in its operations?</span>
             <span class="related-q">How does Unilever measure the effectiveness of its diversity initiatives?</span>
           </div>
+          <br>
         </div>
       </div>
     </div>
