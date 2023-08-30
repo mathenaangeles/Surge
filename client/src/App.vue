@@ -3,7 +3,9 @@
   <!-- NAVIGATION BAR -->
   <nav class="navbar navbar-expand-lg navbar-dark u-navbar">
     <div class="container-fluid">
-      <img src="@/assets/img/logo.png" height="40" style="padding:5px">
+      <router-link :to="{ path: '/' }">
+        <img src="@/assets/img/logo.png" height="40" style="padding:5px">
+      </router-link>
     </div>
   </nav>
   <div style = "display: flex; justify-content:flex-end;">
