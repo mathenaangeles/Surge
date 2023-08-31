@@ -82,7 +82,7 @@ azure-mgmt-trafficmanager==0.50.0
 azure-mgmt-web==0.35.0
 azure-nspkg==3.0.2
 azure-search==1.0.0b2
-azure-search-documents==11.3.0
+azure-search-documents==11.4.0b3
 azure-servicebus==0.21.1
 azure-servicefabric==6.3.0.0
 azure-servicemanagement-legacy==0.20.7
