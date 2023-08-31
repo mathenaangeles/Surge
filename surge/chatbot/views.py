@@ -2,6 +2,11 @@ import asyncio
 from azure.search.documents import SearchClient
 from azure.core.credentials import AzureKeyCredential
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.http import HttpResponse, JsonResponse
+from .serializers import HistorySerializer
+from .models import History
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -50,42 +55,20 @@ async def test():
   await agent.run(history,overrides)
 asyncio.run(test())
 
-def home(request):
-    try:
-        if 'messages' not in request.session:
-            request.session['messages'] = [
-                {"role": "system", "content": "Return a clear and concise answers."},
-            ]
-        if request.method == 'POST':
-            prompt = request.POST.get('prompt')
-            temperature = float(request.POST.get('temperature', 0.1))
-            request.session['messages'].append({"role": "user", "content": prompt})
-            request.session.modified = True
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=request.session['messages'],
-                temperature=temperature,
-                max_tokens=1000,
-            )
-            formatted_response = response['choices'][0]['message']['content']
-            request.session['messages'].append({"role": "system", "content": formatted_response})
-            request.session.modified = True
-            context = {
-                'messages': request.session['messages'],
-                'prompt': '',
-                'temperature': temperature,
-            }
-            return render(request, context)
-        else:
-            context = {
-                'messages': request.session['messages'],
-                'prompt': '',
-                'temperature': 0.1,
-            }
-            return render(request, context)
-    except Exception as e:
-        print(e)
-        return redirect('error')
+@csrf_exempt
+def histories(request):
+    if(request.method == 'GET'):
+        histories = History.objects.all()
+        serializer = HistorySerializer(histories, many=True)
+        return JsonResponse(serializer.data,safe=False)
+    elif(request.method == 'POST'):
+        print(request)
+        data = JSONParser().parse(request)
+        serializer = HistorySerializer(data=data)
+        if(serializer.is_valid()):
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 
 def error_handler(request):
     return render(request)

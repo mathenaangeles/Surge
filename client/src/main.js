@@ -9,6 +9,8 @@ import "bootstrap";
 
 import VueWriter from "vue-writer";
 
+import axios from 'axios'
+
 const routes = [
     { path: '/', component: Homepage },
     { path: '/conversation', component: Answerpage },
@@ -19,4 +21,6 @@ const router = createRouter({
     routes
 })
 
-createApp(App).use(router).use(VueWriter).mount('#app')
+const app = createApp(App).use(router).use(VueWriter)
+app.config.globalProperties.$http = axios
+app.mount("#app")

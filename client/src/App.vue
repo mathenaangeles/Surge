@@ -38,7 +38,7 @@
   <!-- PROMPT AREA -->
   <div class="prompt-area fixed-bottom">
     <div class="mt-3 container-lg prompt-bar p-2">
-      <form @submit.prevent="fetchAnswer()">
+      <form @submit.prevent="submitForm()">
         <div class="d-flex flex-row">
           <div class="custom-dropdown">
             <select v-model="area" @change="() => closeModal()" class="form-select text-light">
@@ -70,17 +70,20 @@
 <script>
 import { ref } from 'vue';
 import Modal from './components/Modal.vue'
-//import axios from 'axios'
 
 export default {
   name: "App",
   components: {
     "Modal": Modal,
   },
+  data() {
+    return {
+        histories: [''],
+    }
+  },
   setup(){
     const question = ref('');
     const area = ref('General');
-
     const fetchAnswer = () => {
       // console.log("QUESTION: " + question.value);
       // console.log("AREA: " + area.value);
@@ -94,6 +97,31 @@ export default {
       modalActive.value = false;
     }
     return { question, area, modalActive, toggleModal, closeModal, fetchAnswer };
+  },
+  methods: {
+    async getData() {
+        try {
+            const response = await this.$http.get('http://localhost:8000/chatbot/histories/');
+            this.histories = response.data; 
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    async submitForm(){
+      try {
+        const history = {
+          user: this.question,
+          bot: ""
+        }
+        const response = await this.$http.post('http://localhost:8000/chatbot/histories/', {
+            conversation: history,
+        });
+        this.histories.push(response.data);
+        this.question = ref('');
+      } catch (error) {
+        console.log(error);
+      }
+  }
   },
 }
 </script>
