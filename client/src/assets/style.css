@@ -63,11 +63,12 @@
 .suggested{
     background-color: #EDEDED;
     border-radius: 20px;
-    height: 70px;
+    height: 85px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 13px;
+    padding: 15px;
 }
 .suggested:hover {
     -webkit-filter: brightness(90%);
