@@ -22,14 +22,7 @@
                 <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1H4z"/>
                 <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
               </svg>
-              Unilever_2012_Annual_Report-25.pdf
-            </span>
-            <span class="source"> 
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="source-icon bi bi-bookmarks" viewBox="0 0 16 16">
-                <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1H4z"/>
-                <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
-              </svg>
-              Unilever_2012_Annual_Report-23.pdf 
+              Unilever_2019_Annual_Report-25.pdf
             </span>
             <span class="source"> 
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="source-icon bi bi-bookmarks" viewBox="0 0 16 16">
@@ -37,13 +30,6 @@
                 <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
               </svg>
               Procter&Gamble_2015_AnnualReport-23.pdf
-            </span>
-            <span class="source"> 
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="source-icon bi bi-bookmarks" viewBox="0 0 16 16">
-                <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1H4z"/>
-                <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
-              </svg>
-              Unilever_2019_Annual_Report-23.pdf 
             </span>
           </div>
         </div>
@@ -114,7 +100,7 @@ export default {
     const arr6 = ["- 2019: €52.0 billion [Unilever_2019_Annual_Report-25.pdf]"];
 
     const arr7 = ["2. A brief analysis of Unilever's sales growth during this period:"];
-    const arr8 = ["- Unilever's sales showed a fluctuating trend from 2015 to 2019, with a peak in 2017 and a dip in 2019."];
+    const arr8 = ["- Unilever's sales showed a fluctuating trend from 2015 to 2019, with a peak in 2017 and a dip in 2019. [Unilever_2019_Annual_Report-25.pdf]"];
    
     const arr9 = ["3. Yearly sales figures for Procter & Gamble (P&G) from 2015 to 2019:"];
     const arr10 = ["- 2015: €76.3 billion [Procter&Gamble_2015_AnnualReport-23.pdf]"];
@@ -124,10 +110,10 @@ export default {
     const arr14 = ["- 2019: €67.7 billion [Procter&Gamble_2015_AnnualReport-23.pdf]"];
 
     const arr15 = ["4. A brief analysis of P&G's sales growth during this period: "];
-    const arr16 = ["- P&G's sales showed a declining trend from 2015 to 2016, followed by a slight increase in 2017 and a further increase in 2018 and 2019."];
+    const arr16 = ["- P&G's sales showed a declining trend from 2015 to 2016, followed by a slight increase in 2017 and a further increase in 2018 and 2019. [Procter&Gamble_2015_AnnualReport-23.pdf]"];
     
     const arr17 = ["5. A comparison of Unilever's and P&G's sales growth and performance from 2015 to 2019:"];
-    const arr18 = ["- Unilever's sales showed a fluctuating trend, with a peak in 2017 and a dip in 2018, while P&G's sales showed a declining trend in 2015 to 2016, followed by a slight increase in 2017 and a further increase in 2018 and 2019."];
+    const arr18 = ["- Unilever's sales showed a fluctuating trend, with a peak in 2017 and a dip in 2018, while P&G's sales showed a declining trend in 2015 to 2016, followed by a slight increase in 2017 and a further increase in 2018 and 2019. [Unilever_2019_Annual_Report-25.pdf][Procter&Gamble_2015_AnnualReport-23.pdf]"];
    
     const arr19 = ["6. Any notable factors or events that influenced the sales growth of both companies during this period:"];
     const arr20 = ["The sources do not provide information on notable factors or events that influenced the sales growth of both companies during this period."];
