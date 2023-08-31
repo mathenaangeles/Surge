@@ -1,7 +1,7 @@
 <template>
   <div>
   <!-- NAVIGATION BAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark u-navbar">
+  <nav class="navbar navbar-expand-lg navbar-dark u-navbar sticky-top">
     <div class="container-fluid">
       <router-link :to="{ path: '/' }">
         <img src="@/assets/img/logo.png" height="40" style="padding:5px">
@@ -52,18 +52,26 @@
           </div>
           <div class="custom-promptbox">
             <input v-model="question" @keydown.enter.prevent="fetchAnswer()" type="text" class="form-control" id="prompt" placeholder="What do you want to know?">
-            <button type="submit" class="btn btn-warning btn-circle btn-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-              </svg>
-            </button>
+            <router-link :to="{ path: '/conversation' }">
+              <button type="submit" class="btn btn-warning btn-circle btn-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                </svg>
+              </button>
+            </router-link>
           </div>
         </div>
       </form>
     </div>
   </div>
+
   <!-- TO RENDER HOMEPAGE UPON APP START -->
-  <RouterView />
+  <router-view v-slot="{ Component}">
+    <transition name="route" mode="out-in">
+      <component :is="Component"></component>
+    </transition>
+  </router-view>
+
   </div>
 </template>
 
@@ -128,4 +136,24 @@ export default {
 
 <style>
   @import './assets/style.css';
+
+  /* ROUTE TRANSITIONS HERE */
+  .route-enter-from{
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  .route-enter-active{
+    transition: all 0.3s ease-out;
+  }
+
+  .route-leave-to{
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  .route-leave-active{
+    transition: all 0.3s ease-in;
+  }
+
 </style>

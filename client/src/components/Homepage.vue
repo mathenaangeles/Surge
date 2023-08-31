@@ -1,5 +1,5 @@
 <template>
-  <div class="main-wrapper container-fluid">
+  <div class="main-wrapper h-100">
   <div class="main row">
     <div class="landing my-auto">
       <div class="landing-text-group">

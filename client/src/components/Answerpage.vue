@@ -1,5 +1,5 @@
 <template>
-    <div class="main-wrapper w-100 h-100">
+    <div class="main-wrapper h-100">
       <div class="area-containers mx-5 p-4 question-area">
         <span style="font-family: 'ShillingM';">Question: </span>
         <span>Unilever background</span>
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="mt-5">
-          <VueWriter :array="arr" :typeSpeed="10" :iterations='1'/>
+          <VueWriter :array="arr" :typeSpeed="20" :iterations='1'/>
           <br><br>
           <hr/>
           <br>
@@ -59,7 +59,6 @@ export default {
 </script>
 
 <style scoped>
-
 .area-containers{
   border-radius: 10px;
 }

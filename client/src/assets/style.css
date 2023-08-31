@@ -24,8 +24,8 @@
 }
 
 .main-wrapper{
-    height: 100vh;
     background-color: #fefefe;
+    overflow-x: hidden;
 }
 
 .vis-button{
@@ -36,9 +36,9 @@
     border-bottom-right-radius: 0px;
     border-color: transparent;
     color: white;
+    position:absolute;
     font-family: 'ShillingM';
     font-size: 20px;
-    position:absolute;
     height:120px;
     width: 90px;
     margin-top: 50px;
@@ -131,3 +131,21 @@
     position: absolute;
 }
 
+/* ROUTE TRANSITIONS */
+.route-enter-from{
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  .route-enter-active{
+    transition: all 0.3s ease-out;
+  }
+
+  .route-leave-to{
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  .route-leave-active{
+    transition: all 0.3s ease-in;
+  }
