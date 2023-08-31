@@ -92,9 +92,9 @@
           <img src="@/assets/img/lightbulb.png" height="50">
           <span class="related-header">You might want to explore...</span><br>
           <div class="row">
-            <span class="related-q">How has Unilever's workforce diversity evolved over time?</span>
-            <span class="related-q">What actions has Unilever taken to promote diversity and inclusion in its operations?</span>
-            <span class="related-q">How does Unilever measure the effectiveness of its diversity initiatives?</span>
+            <span class="related-q">What were the major currency fluctuations and economic/political uncertainties that affected Unilever's sales growth during this period?</span>
+            <span class="related-q">What were the major changes in consumer preferences and behaviors that affected Unilever's and P&G's sales growth during this period?</span>
+            <span class="related-q">What strategies did Unilever and P&G implement to address the factors that affected their sales growth during this period?</span>
           </div>
           <br>
         </div>
