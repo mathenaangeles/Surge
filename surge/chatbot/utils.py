@@ -2,7 +2,7 @@ from typing import Any
 import abc
 
 import openai
-from azure.search.documents.aio import SearchClient
+from azure.search.documents import SearchClient
 from azure.search.documents.models import QueryType
 
 from .core.messagebuilder import MessageBuilder
@@ -22,11 +22,10 @@ class ChatReadRetrieveReadApproach(ChatApproach):
     USER = "user"
     ASSISTANT = "assistant"
 
-    """
-    Simple retrieve-then-read implementation, using the Cognitive Search and OpenAI APIs directly. It first retrieves
-    top documents from search, then constructs a prompt with them, and then uses OpenAI to generate an completion
-    (answer) with that prompt.
-    """
+    # Simple retrieve-then-read implementation, using the Cognitive Search and OpenAI APIs directly. It first retrieves
+    # top documents from search, then constructs a prompt with them, and then uses OpenAI to generate an completion
+    # (answer) with that prompt.
+
     system_message_chat_conversation = """You are an intelligent assistant helping Unilever employees in the Competitor Intelligence group with their questions about the annual reports of Unilever and its competitors (for example: P&G, Colgate, etc.). Be brief in your answers.
 Answer ONLY with the facts listed in the list of sources below. If there isn't enough information below, say you don't know. Do not generate answers that don't use the sources below. If asking a clarifying question to the user would help, ask the question.
 For tabular information return it as an html table. Do not return markdown format. If the question is not in English, answer in the language used in the question.
@@ -41,7 +40,7 @@ Try not to repeat questions that have already been asked.
 Only generate questions and do not generate any text before or after the questions, such as 'Next Questions'"""
 
     query_prompt_template = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base about the annual reports of Unilever and its competitors.
-Generate a search query based on the conversation and the new question.
+Generate a search query based on the conversation and the new question. The search query, when entered into Azure Cognitive Search using the Semantic Search method, should be able to generate a coherent answer based on the original user question.
 Do not include cited source filenames and document names e.g info.txt or doc.pdf in the search query terms.
 Do not include any text inside [] or <<>> in the search query terms.
 Do not include any special characters like '+'.
@@ -71,8 +70,8 @@ If you cannot generate a search query, return just the number 0.
         has_vector = False #overrides.get("retrieval_mode") in ["vectors", "hybrid", None]
         use_semantic_captions = True if overrides.get("semantic_captions") and has_text else False
         top = overrides.get("top") or 3
-        exclude_category = overrides.get("exclude_category") or None
-        filter = "category ne '{}'".format(exclude_category.replace("'", "''")) if exclude_category else None
+        # exclude_category = overrides.get("exclude_category") or None
+        # filter = "category ne '{}'".format(exclude_category.replace("'", "''")) if exclude_category else None
 
         user_q = 'Generate search query for: ' + history[-1]["user"]
 
@@ -90,31 +89,31 @@ If you cannot generate a search query, return just the number 0.
             deployment_id=self.chatgpt_deployment,
             model=self.chatgpt_model,
             messages=messages,
-            temperature=0.0,
-            max_tokens=32,
+            temperature=0.1,
+            max_tokens=5000,
             n=1)
 
-        # query_text = chat_completion.choices[0].message.content
-        query_text = user_q
+        query_text = chat_completion.choices[0].message.content
+        # query_text = user_q
         if query_text.strip() == "0":
             query_text = history[-1]["user"] # Use the last user input if we failed to generate a better query
 
         # STEP 2: Retrieve relevant documents from the search index with the GPT optimized query
 
         # If retrieval mode includes vectors, compute an embedding for the query
-        if has_vector:
-            query_vector = (await openai.Embedding.acreate(engine=self.embedding_deployment, input=query_text))["data"][0]["embedding"]
-        else:
-            query_vector = None
+        # if has_vector:
+        #     query_vector = (await openai.Embedding.acreate(engine=self.embedding_deployment, input=query_text))["data"][0]["embedding"]
+        # else:
+        #     query_vector = None
 
-         # Only keep the text query if the retrieval mode uses text, otherwise drop it
-        if not has_text:
-            query_text = None
+        #  # Only keep the text query if the retrieval mode uses text, otherwise drop it
+        # if not has_text:
+        #     query_text = None
 
         # Use semantic L2 reranker if requested and if retrieval mode is text or hybrid (vectors + text)
         if overrides.get("semantic_ranker") and has_text:
             r = self.search_client.search(query_text,
-                                          filter=filter,
+                                        #   filter=filter,
                                           query_type=QueryType.SEMANTIC,
                                           query_language="en-us",
                                           query_speller="lexicon",
@@ -127,7 +126,7 @@ If you cannot generate a search query, return just the number 0.
                                         )
         else:
             r = self.search_client.search(query_text,
-                                          filter=filter,
+                                        #   filter=filter,
                                           top=top)
                                           # vector=None, #query_vector
                                           # top_k=None, #50 if query_vector else None,
