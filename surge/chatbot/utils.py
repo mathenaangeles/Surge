@@ -91,10 +91,11 @@ If you cannot generate a search query, return just the number 0.
             model=self.chatgpt_model,
             messages=messages,
             temperature=0.0,
-            max_tokens=400,
+            max_tokens=32,
             n=1)
 
-        query_text = chat_completion.choices[0].message.content
+        # query_text = chat_completion.choices[0].message.content
+        query_text = user_q
         if query_text.strip() == "0":
             query_text = history[-1]["user"] # Use the last user input if we failed to generate a better query
 
@@ -119,10 +120,11 @@ If you cannot generate a search query, return just the number 0.
                                           query_speller="lexicon",
                                           semantic_configuration_name="default",
                                           top=top,
-                                          query_caption="extractive|highlight-false" if use_semantic_captions else None,
-                                          vector=query_vector,
-                                          top_k=50 if query_vector else None,
-                                          vector_fields="embedding" if query_vector else None)
+                                          query_caption="extractive|highlight-false" if use_semantic_captions else None
+                                        #   vector=query_vector,
+                                        #   top_k=50 if query_vector else None,
+                                        #   vector_fields="embedding" if query_vector else None
+                                        )
         else:
             r = self.search_client.search(query_text,
                                           filter=filter,
@@ -160,7 +162,7 @@ If you cannot generate a search query, return just the number 0.
             deployment_id=self.chatgpt_deployment,
             model=self.chatgpt_model,
             messages=messages,
-            temperature=overrides.get("temperature") or 0.6,
+            temperature=overrides.get("temperature") or 0.35,
             max_tokens=1024,
             n=1)
 

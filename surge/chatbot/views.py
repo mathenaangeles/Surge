@@ -31,7 +31,12 @@ search_client = SearchClient(endpoint=azure_search_service,
 history = [{"user": "Unilever background"}]
 
 # settings
-overrides = {"retrieval_mode": "text", "semantic_ranker": False, "semantic_captions": False, "top": 3, "suggest_followup_questions": True}
+overrides = {"retrieval_mode": "text", 
+             "semantic_ranker": True, 
+             "semantic_captions": True, 
+             "top": 3, 
+             "suggest_followup_questions": True,
+             "temperature": 0.35}
 
 # Instantiate GPT
 agent = ChatReadRetrieveReadApproach(
