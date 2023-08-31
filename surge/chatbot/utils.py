@@ -170,12 +170,12 @@ If you cannot generate a search query, return just the number 0.
 
         msg_to_display = '\n\n'.join([str(message) for message in messages])
         end = {"data_points": results, "answer": chat_content, "thoughts": f"Searched for:<br>{query_text}<br><br>Conversations:<br>" + msg_to_display.replace('\n', '<br>')}
-        print('Original Question', history[-1]["user"], '==============')
-        print('Refined Question:', query_text, '==============')
-        print('Answer:', end['answer'], '==============')
-        print('Dictionary Keys:',end.keys(),'==============')
-        print('Data Points:', results)
-        return {"data_points": results, "answer": chat_content, "thoughts": f"Searched for:<br>{query_text}<br><br>Conversations:<br>" + msg_to_display.replace('\n', '<br>')}
+        # print('Original Question', history[-1]["user"], '==============')
+        # print('Refined Question:', query_text, '==============')
+        # print('Answer:', end['answer'], '==============')
+        # print('Dictionary Keys:',end.keys(),'==============')
+        # print('Data Points:', results)
+        return end
 
     def get_messages_from_history(self, system_prompt: str, model_id: str, history: list[dict[str, str]], user_conv: str, few_shots = [], max_tokens: int = 4096) -> list:
         message_builder = MessageBuilder(system_prompt, model_id)

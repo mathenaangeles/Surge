@@ -15,6 +15,8 @@ import os
 from typing import List
 from .utils import ChatReadRetrieveReadApproach
 
+from asgiref.sync import async_to_sync, sync_to_async
+
 openai.api_type = os.environ["AZURE_OPENAI_TYPE"]
 openai.api_base = os.environ["AZURE_OPENAI_SERVICE"]
 openai.api_version = os.environ["AZURE_OPENAI_CHATGPT_VERSION"]
@@ -31,10 +33,6 @@ azure_secret_key = AzureKeyCredential(os.environ["AZURE_SECRET_KEY"])
 search_client = SearchClient(endpoint=azure_search_service,
                              index_name=azure_search_index,
                              credential=azure_secret_key)
-
-# input
-history = [{"user": "Unilever background"}]
-
 # settings
 overrides = {"retrieval_mode": "text", 
              "semantic_ranker": True, 
@@ -51,21 +49,23 @@ agent = ChatReadRetrieveReadApproach(
                                     'chat','sourcepage','content') 
 
 # Run
-async def test():
-  await agent.run(history,overrides)
-asyncio.run(test())
+async def chatbot(history):
+  return await agent.run(history,overrides)
 
 @csrf_exempt
 def histories(request):
     if(request.method == 'GET'):
-        histories = History.objects.all()
+        histories =  History.objects.all()
         serializer = HistorySerializer(histories, many=True)
         return JsonResponse(serializer.data,safe=False)
     elif(request.method == 'POST'):
-        print(request)
         data = JSONParser().parse(request)
         serializer = HistorySerializer(data=data)
         if(serializer.is_valid()):
+            conversations = [*History.objects.values_list('conversation', flat=True)]
+            result = asyncio.run(chatbot(conversations))
+            data['conversation']['bot'] = result['answer']
+            print(data)
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
