@@ -50,22 +50,21 @@ agent = ChatReadRetrieveReadApproach(
 
 # Run
 async def chatbot(history):
-  return await agent.run(history,overrides)
+  return await agent.run(history, overrides)
 
 @csrf_exempt
 def histories(request):
     if(request.method == 'GET'):
         histories =  History.objects.all()
         serializer = HistorySerializer(histories, many=True)
-        return JsonResponse(serializer.data,safe=False)
+        return JsonResponse(serializer.data, safe=False)
     elif(request.method == 'POST'):
         data = JSONParser().parse(request)
         serializer = HistorySerializer(data=data)
         if(serializer.is_valid()):
             conversations = [*History.objects.values_list('conversation', flat=True)]
-            result = asyncio.run(chatbot(conversations))
+            result = asyncio.run(chatbot(conversations + [data['conversation']]))
             data['conversation']['bot'] = result['answer']
-            print(data)
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)

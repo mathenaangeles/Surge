@@ -35,6 +35,13 @@
   <div style = "display: flex; justify-content:flex-end;">
     <button @click="() => toggleModal()" class="vis-button"><p>At A Glance</p></button>
   </div>
+  <!-- CHAT LOG -->
+  <ul class="tasks_list">
+      <li v-for="history in histories" :key="history.id">
+          <h2>{{ history.conversation.user }}</h2>
+          <h2>{{ history.conversation.bot }}</h2>
+      </li>
+  </ul>
   <!-- PROMPT AREA -->
   <div class="prompt-area fixed-bottom">
     <div class="mt-3 container-lg prompt-bar p-2">
@@ -50,7 +57,7 @@
               <option value="MAStrategy">M&A, Strategy</option>
             </select>
           </div>
-          <div class="custom-promptbox">
+          <!-- <div class="custom-promptbox">
             <input v-model="question" @keydown.enter.prevent="fetchAnswer()" type="text" class="form-control" id="prompt" placeholder="What do you want to know?">
             <router-link :to="{ path: '/financials' }">
               <button @click="fetchAnswer()" type="submit" class="btn btn-warning btn-circle btn-sm">
@@ -59,6 +66,14 @@
                 </svg>
               </button>
             </router-link>
+          </div> -->
+          <div class="custom-promptbox">
+            <input v-model="question" @keydown.enter.prevent="submitForm()" type="text" class="form-control" id="prompt" placeholder="What do you want to know?">
+              <button type="submit" class="btn btn-warning btn-circle btn-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                </svg>
+              </button>
           </div>
         </div>
       </form>
@@ -111,26 +126,30 @@ export default {
         try {
             const response = await this.$http.get('http://localhost:8000/chatbot/histories/');
             this.histories = response.data; 
+            console.log(this.histories)
         } catch (error) {
             console.log(error);
         }
     },
     async submitForm(){
       try {
-        const history = {
+        const conversation = {
           user: this.question,
           bot: ""
         }
         const response = await this.$http.post('http://localhost:8000/chatbot/histories/', {
-            conversation: history,
+            conversation: conversation,
         });
         this.histories.push(response.data);
-        this.question = ref('');
+        this.question = '';
       } catch (error) {
         console.log(error);
       }
-  }
+    }
   },
+  created(){
+    this.getData();
+  }
 }
 </script>
 

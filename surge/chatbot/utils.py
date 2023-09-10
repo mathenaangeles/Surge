@@ -141,6 +141,7 @@ Understand what the user is looking for and add related areas of analysis to the
                                           # top_k=None, #50 if query_vector else None,
                                           # vector_fields=None) #"embedding" if query_vector else None)
         if use_semantic_captions:
+            # print(dir(doc) for doc in r)
             results = [doc[self.sourcepage_field] + ": " + nonewlines(" . ".join([c.text for c in doc['@search.captions']])) for doc in r]
         else:
             results = [doc[self.sourcepage_field] + ": " + nonewlines(doc[self.content_field]) for doc in r]
