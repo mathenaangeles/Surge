@@ -12,8 +12,6 @@ import VueWriter from "vue-writer";
 
 import axios from 'axios'
 
-import Chart from 'chart.js';
-
 const routes = [
     { path: '/', component: Homepage },
     { path: '/financials', component: Answerpage },
@@ -28,17 +26,3 @@ const router = createRouter({
 const app = createApp(App).use(router).use(VueWriter)
 app.config.globalProperties.$http = axios
 app.mount("#app")
-
-
-new Chart(document.getElementById('answer-chart'), {
-  type: 'line',
-  data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-    datasets: [
-      {
-        label: '2018 Sales',
-        data: [300, 700, 450, 750, 450]
-      }
-    ]
-  }
-});

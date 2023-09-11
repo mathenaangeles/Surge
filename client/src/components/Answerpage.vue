@@ -46,7 +46,6 @@
               </svg>
               [3] Unilever_2017_Annual_Report-45.pdf
             </span>
-
             <!--TOGGLE MORE REFERENCES-->
             <div v-show="showSrc">
             <span class="source"> 
@@ -120,7 +119,7 @@
               [13] P&G_2019_Annual_Report-29.pdf
             </span>
             </div>
-            <button @click="toggleSources" class="btn btn-source" ref="srcToggle">View more sources</button>
+            <br><button @click="toggleSources" class="btn btn-source" ref="srcToggle">View more sources</button>
           </div>
         </div>
         <!--CHART-->
@@ -168,9 +167,15 @@
           <img src="@/assets/img/lightbulb.png" height="50">
           <span class="related-header">You might want to explore...</span><br>
           <div class="row">
-            <span class="related-q">What were the main drivers of Unilever's sales growth in 2017?</span>
-            <span class="related-q">How did P&G's sales growth compare to its competitors during this period?</span>
-            <span class="related-q">What actions did P&G take to improve its core gross margin from 2015 to 2019?</span>
+            <router-link :to="{ path: '/general' }">
+            <button class="btn related-q">What were the main drivers of Unilever's sales growth in 2017?</button>
+            </router-link>
+            <router-link :to="{ path: '/general' }">
+            <button class="btn related-q">How did P&G's sales growth compare to its competitors during this period?</button>
+            </router-link>
+            <router-link :to="{ path: '/general' }">
+            <button class="btn related-q">What actions did P&G take to improve its core gross margin from 2015 to 2019?</button>
+            </router-link>
           </div>
           <br>
         </div>
@@ -279,6 +284,10 @@ export default {
   margin-top: 12px;
   margin-left: 60px;
   width: 75%;
+  text-align: left !important;
+}
+.related-q:hover{
+  background-color: #c4e9f8;
 }
 
-</style>
+</style>å
