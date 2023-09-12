@@ -65,6 +65,8 @@ def histories(request):
             conversations = [*History.objects.values_list('conversation', flat=True)]
             result = asyncio.run(chatbot(conversations + [data['conversation']]))
             data['conversation']['bot'] = result['answer']
+            data['sources'] = result['sources']
+            data['questions'] = result['questions']
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)

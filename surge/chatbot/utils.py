@@ -40,7 +40,7 @@ When making recommendations and inferences explain your thought process step by 
     follow_up_questions_prompt_content = """Generate three very brief follow-up questions that the user would likely ask next about the annual reports.
 Use double angle brackets to reference the questions, e.g. <<What strategies should Unilever consider to continue growing its turnover?>>.
 Try not to repeat questions that have already been asked.
-Only generate questions and do not generate any text before or after the questions, such as 'Next Questions'"""
+Only generate questions and do not generate any text before or after the questions. Preface the follow-up questions with 'Next Questions:'"""
 
     query_prompt_template = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base about the annual reports of Unilever and its competitors. 
 Generate a new search query based on the conversation and the new question. The search query, when entered into Azure Cognitive Search using the Semantic Search method, should be able to generate a coherent answer based on the original user question.
@@ -176,9 +176,10 @@ Understand what the user is looking for and add related areas of analysis to the
             n=1)
 
         chat_content = chat_completion.choices[0].message.content
-
         msg_to_display = '\n\n'.join([str(message) for message in messages])
-        end = {"data_points": results, "answer": chat_content, "thoughts": f"Searched for:<br>{query_text}<br><br>Conversations:<br>" + msg_to_display.replace('\n', '<br>')}
+        chat_content_split = chat_content.split("Next Questions:", 1)
+        sources = [s.split(":")[0] for s in results]
+        end = {"data_points": results, "answer": chat_content_split[0], "sources": sources, "questions": [q for q in chat_content_split[1].split('?')], "thoughts": f"Searched for:<br>{query_text}<br><br>Conversations:<br>" + msg_to_display.replace('\n', '<br>')}
         # print('Original Question', history[-1]["user"], '==============')
         # print('Refined Question:', query_text, '==============')
         # print('Answer:', end['answer'], '==============')
